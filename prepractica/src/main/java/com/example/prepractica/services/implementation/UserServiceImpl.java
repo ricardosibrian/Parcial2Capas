@@ -40,17 +40,22 @@ public class UserServiceImpl implements UserService {
         this.rolRepository = rolRepository;
     }
 
+
     @Override
-    public User getUserByEmail(String email) {
+    public User findUserByIdentifier(String identifier) {
+        return this.findUserByUsernameOrEmail(identifier, identifier);
+    }
+
+    @Override
+    public User findUserByUsernameOrEmail(String username, String email) {
         return userRepository
-                .findByEmail(email)
+                .findByUsernameOrEmail(username, email)
                 .orElse(null);
     }
 
     @Override
-    public User getUserByUUID(UUID uuid) {
-        return userRepository
-                .findById(uuid)
+    public User findByUUID(UUID uuid) {
+        return userRepository.findByUserId(uuid)
                 .orElse(null);
     }
 
@@ -65,7 +70,7 @@ public class UserServiceImpl implements UserService {
 
         User user = new User();
 
-        List<Rol> roles = findRolesByIdentifier(List.of("USER"));
+        List<Rol> roles = findRolesByIdentifier(List.of("AA13"));
 
         user.setUsername(info.getUsername());
         user.setEmail(info.getEmail());
@@ -138,7 +143,7 @@ public class UserServiceImpl implements UserService {
                 .getAuthentication() // Devuelve el objeto Authentication que representa los detalles de la autenticación del usuario actual.
                 .getName(); // Devuelve el identificador del usuario autenticado
 
-        return userRepository.findByEmail(email) // Buscamos el usuario
+        return userRepository.findByUsernameOrEmail(email, email) // Buscamos el usuario
                 .orElse(null); // Sino existe devolvemos false
     }
 
@@ -151,7 +156,7 @@ public class UserServiceImpl implements UserService {
     public void createDefaultUser(String name, String userEmail, String password) {
         User user = new User();
 
-        List<Rol> roles = findRolesByIdentifier(List.of("ADMIN"));
+        List<Rol> roles = findRolesByIdentifier(List.of("AA11"));
 
         user.setUsername(name);
         user.setEmail(userEmail);

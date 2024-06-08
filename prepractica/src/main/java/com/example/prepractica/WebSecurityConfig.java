@@ -45,7 +45,7 @@ public class WebSecurityConfig {
 
         managerBuilder
                 .userDetailsService(email -> { // Carga los detalles de un usuario durante el proceso de autenticación.
-                    User user = userService.getUserByEmail(email); // Buscamos el usuario a traves del servicio de Usuarios
+                    User user = userService.findUserByIdentifier(email); // Buscamos el usuario a traves del servicio de Usuarios
 
                     if (user == null)
                         throw new UsernameNotFoundException("User " + email + " not found"); // Si no se econtro devolvemos una excepcion
@@ -65,18 +65,16 @@ public class WebSecurityConfig {
         // Deshabilita CSRF (Es una vulnerabilidad)
 
         // Route filter
-        http.authorizeHttpRequests(auth -> auth // Configuraremos la autotizacion de las solicitudes HTTP
-                        .requestMatchers("/api/auth/**")// Selerccionamos las rutas deseadas que no requeriran autenticacion
-                        .permitAll() // Permitimos el acceso completo a las rutas sin necesidad de nada mas
-                //.anyRequest() // Regla de autorización global que se aplicará a todas las solicitudes HTTP no coincidentes con reglas específicas previamente definidas.
-                //.authenticated() // Indica que para que el usuario desea hacer solicitudes, debe de estar previamente autenticado
-        );
-
         http.authorizeHttpRequests(auth -> auth
                         .requestMatchers("/test/**")
-                        .hasRole("ADMIN")
-                //.anyRequest()
-                //.authenticated()
+                        .hasRole("AA11")
+        );
+
+        http.authorizeHttpRequests(auth -> auth // Configuraremos la autotizacion de las solicitudes HTTP
+                .requestMatchers("/api/auth/**")// Selerccionamos las rutas deseadas que no requeriran autenticacion
+                .permitAll() // Permitimos el acceso completo a las rutas sin necesidad de nada mas
+                .anyRequest() // Regla de autorización global que se aplicará a todas las solicitudes HTTP no coincidentes con reglas específicas previamente definidas.
+                .authenticated() // Indica que para que el usuario desea hacer solicitudes, debe de estar previamente autenticado
         );
 
         //Statelessness

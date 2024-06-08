@@ -27,7 +27,7 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<GeneralResponse> register (@RequestBody @Valid RegisterDTO info){
 
-        User user = userService.getUserByEmail(info.getEmail());
+        User user = userService.findUserByIdentifier(info.getEmail());
 
         if (user != null) {
             return GeneralResponse.getResponse(HttpStatus.CONFLICT, "User already exist");
@@ -47,7 +47,7 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<GeneralResponse> login(@RequestBody @Valid LoginDTO info) {
 
-        User user = userService.getUserByEmail(info.getEmail());
+        User user = userService.findUserByIdentifier(info.getEmail());
 
         if (user == null) {
             return GeneralResponse.getResponse(HttpStatus.NOT_FOUND, "User not found");

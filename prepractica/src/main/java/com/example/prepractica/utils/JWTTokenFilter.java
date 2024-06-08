@@ -59,7 +59,7 @@ public class JWTTokenFilter extends OncePerRequestFilter { // Esta clase se util
         }
 
         if (email != null && token != null && SecurityContextHolder.getContext().getAuthentication() == null) { // Verifica que el usuario y el token no sea nulo, esos se llenaron en el if anterior
-            User user = userService.getUserByEmail(email); // Utilizamos a userService para buscar        // y el otro verifica que no haya un proceso de autenticacion activa
+            User user = userService.findUserByIdentifier(email); // Utilizamos a userService para buscar        // y el otro verifica que no haya un proceso de autenticacion activa
             // al usuario del token
             if (user != null) { // Si se encontro
                 Boolean tokenValidity = userService.validateToken(user, token); // Validamos el Token

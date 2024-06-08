@@ -28,7 +28,7 @@ public class HistorialController {
     @Autowired
     private UserService userService;
 
-    @PostMapping("/create")
+    /*@PostMapping("/create")
     public ResponseEntity<GeneralResponse> createHistorial (@RequestBody @Valid CreateHistorialDTO info){
 
         User user = userService.getUserByUUID(info.getFk_user());
@@ -41,5 +41,5 @@ public class HistorialController {
         }
 
         return GeneralResponse.getResponse(HttpStatus.OK, "Create Historial successful");
-    }
+    }*/
 }

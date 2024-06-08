@@ -10,9 +10,9 @@ import java.util.List;
 import java.util.UUID;
 
 public interface UserService{
-    User getUserByEmail(String email);
-
-    User getUserByUUID(UUID uuid);
+    User findUserByUsernameOrEmail(String username, String email);
+    User findUserByIdentifier(String identifier);
+    User findByUUID(UUID uuid);
 
     boolean correctPassword(User user, String password);
 
