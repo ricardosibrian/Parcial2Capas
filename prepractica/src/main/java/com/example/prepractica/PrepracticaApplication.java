@@ -26,10 +26,8 @@ public class PrepracticaApplication {
 
             if (existRole == null) {
                 Rol rol = new Rol();
-
                 rol.setRolId("AA11");
                 rol.setRol("SYSADMIN");
-
                 rolRepository.save(rol);
 
             User user = userRepository.findByUsernameOrEmail("admin@admin.com","admin@admin.com")

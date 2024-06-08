@@ -6,6 +6,7 @@ import com.example.prepractica.domain.dtos.User.LoginDTO;
 import com.example.prepractica.domain.dtos.User.RegisterDTO;
 import com.example.prepractica.domain.entities.Token;
 import com.example.prepractica.domain.entities.User;
+import com.example.prepractica.repositories.TokenRepository;
 import com.example.prepractica.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

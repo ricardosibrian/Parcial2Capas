@@ -28,6 +28,7 @@ public interface UserService{
     void cleanTokens(User user);
     Token registerToken(User user);
     Boolean validateToken(User user, String token);
+    public void cleanPreviousTokens(User user);
 
     User findUserAuthenticated();
 

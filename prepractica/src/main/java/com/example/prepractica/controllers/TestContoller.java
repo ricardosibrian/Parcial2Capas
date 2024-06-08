@@ -5,13 +5,10 @@ import com.example.prepractica.domain.entities.User;
 import com.example.prepractica.services.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/test")
+@RequestMapping("/test")
 public class TestContoller {
 
     private final UserService userService;
@@ -26,5 +23,20 @@ public class TestContoller {
         String userEmail = user.getEmail();
 
         return GeneralResponse.getResponse(HttpStatus.OK, userEmail);
+    }
+
+    @GetMapping("/get")
+    public ResponseEntity<GeneralResponse> get() {
+        return GeneralResponse.getResponse(HttpStatus.OK, "GET");
+    }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<GeneralResponse> delete() {
+        return GeneralResponse.getResponse(HttpStatus.OK, "DELETE");
+    }
+
+    @PatchMapping("/patch")
+    public ResponseEntity<GeneralResponse> patch() {
+        return GeneralResponse.getResponse(HttpStatus.OK, "PATCH");
     }
 }

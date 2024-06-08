@@ -98,7 +98,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(rollbackOn = Exception.class)
     public void cleanTokens(User user) {
-        List<Token> tokens = tokenRepository.findByUserAndActive(user, true); // Obtenemos todos los tokens activos del usuario en forma de lista
+        List<Token> tokens = tokenRepository.findByUserAndActive(user,true); // Obtenemos todos los tokens activos del usuario en forma de lista
 
         tokens.forEach(token -> { // Creamos unestra lambda, para cada uno de los tokens
             if (!jwtTools.verifyToken(token.getContent())) { // Si la verificacion es false
@@ -109,8 +109,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(rollbackOn = Exception.class)
     public Token registerToken(User user) {
         cleanTokens(user); // Llamamos a la funcion cleanTokens
+        cleanPreviousTokens(user);
 
         String tokenString = jwtTools.generateToken(user); // Generamos el Token
         Token token = new Token(tokenString, user); // Le pasamos el String al Token y el usuario para que lo almacene en la base
@@ -128,12 +130,22 @@ public class UserServiceImpl implements UserService {
 
         tokens.stream() // Creamos nuestro stream
                 .filter(tk -> tk.getContent().equals(token)) // Filtramos el token que recibimos y buscamos una coincidencia total con los tokens almacenados
-                .findAny() // Obtenemos todos los que son iguales, sino solo devuelve null
-                /*.ifPresent(tk -> { // Si hay algo ejecutamos el stream
+                .findAny()// Obtenemos todos los que son iguales, sino solo devuelve null
+                .ifPresent(tk -> { // Si hay algo ejecutamos el stream
                     tk.setActive(false); // Seteamos falso el token
                     tokenRepository.save(tk); // Modificamos el token a traves del Repositorio (CRUD)
-                })*/;
+                });
         return tokens.stream().anyMatch(tk -> tk.getContent().equals(token)); // Si un token cumple con la condicion dada devolvera true, sino devolver false
+    }
+
+    @Override
+    public void cleanPreviousTokens(User user) {
+        List<Token> tokens = tokenRepository.findByUserAndActive(user, true);
+
+        tokens.forEach(token -> {
+            token.setActive(false);
+            tokenRepository.save(token);
+        });
     }
 
     @Override
